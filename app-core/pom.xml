@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>app-core</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>com.github.jtschei</groupId>
+	        <artifactId>multi-hadoop-version-maven-app</artifactId>
+	        <version>0.1</version>
+	</parent>
+
+	<dependencies>
+		<!-- non-hadoop dependencies -->
+		<!-- for example ... -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<!-- here we (1) separate dependencies that are unique to hadoop versions -->
+		<!-- and (2) include a dependency on our hadoop-version-specific wrapper -->
+		<profile>
+			<id>hadoop1</id>
+			<dependencies>
+				<!-- hadoop-core exists for hadoop1 but not hadoop2 -->
+				<dependency>
+                                        <groupId>org.apache.hadoop</groupId>
+                                        <artifactId>hadoop-core</artifactId>
+                                        <version>${hadoop_client_version}</version>
+                                </dependency>
+				<!-- include the module that implements hadoop1's api which is different than hadoop2's -->
+                                <dependency>
+                                        <groupId>com.github.jtschei</groupId>
+                                        <artifactId>app-util-hadoop1</artifactId>
+                                        <version>0.1</version>
+                                </dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>hadoop2</id>
+			<dependencies>
+				<!-- generic hadoop2 dependencies -->
+				<dependency>
+					<groupId>org.apache.hadoop</groupId>
+					<artifactId>hadoop-common</artifactId>
+					<version>${hadoop_client_version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.hadoop</groupId>
+					<artifactId>hadoop-hdfs</artifactId>
+					<version>${hadoop_client_version}</version>
+				</dependency>
+				<!-- include the module that implements hadoop2's api which is different than hadoop1's -->
+                                <dependency>
+                                        <groupId>com.github.jtschei</groupId>
+                                        <artifactId>app-util-hadoop1</artifactId>
+                                        <version>0.1</version>
+                                </dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<!--  add specialized plugins if needed -->
+		</plugins>
+	</build>
+
+</project>
+

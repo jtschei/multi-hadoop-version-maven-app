@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.github.jtschei</groupId>
+	<artifactId>multi-hadoop-version-maven-app</artifactId>
+	<version>0.1</version>
+	<packaging>pom</packaging>
+
+	<name>Multi-Hadoop-Version Maven Application Framework</name>
+	<url>https://github.com/jtschei/multi-hadoop-version-maven-app</url> 
+
+	<properties>
+		<!-- specify the hadoop versions you want to use for your project here -->
+		<hadoop1_version>0.20.205.0</hadoop1_version>
+		<hadoop2_version>2.4.1</hadoop2_version>
+	</properties>
+
+	<profiles>
+		<!-- we define one profile for hadoop1 and another for hadoop2 -->
+		<!-- the different profiles reference hadoop version specific hadoop wrapper modules -->
+		<profile>
+			<id>hadoop1</id>
+			<properties>
+				<project_java_version>1.6</project_java_version>
+				<hadoop_client_version>${hadoop1_version}</hadoop_client_version>
+				<hadoop_major_version>1</hadoop_major_version>
+			</properties>
+			<modules>
+				<module>app-core</module>
+				<module>app-util-hadoop1</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>hadoop2</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<project_java_version>1.7</project_java_version>
+				<hadoop_client_version>${hadoop2_version}</hadoop_client_version>
+				<hadoop_major_version>2</hadoop_major_version>
+			</properties>
+			<modules>
+				<module>app-core</module>
+				<module>app-util-hadoop1</module>
+			</modules>
+		</profile>
+	</profiles>
+
+	<repositories>
+		<!-- all the applicable repositories -->
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${parent.project.java.version}</source>
+					<target>${parent.project.java.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
